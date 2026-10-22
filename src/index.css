@@ -8,6 +8,17 @@
     color: var(--color-text-primary);
     background-color: var(--color-palette-white);
   }
+
+  button,
+  input,
+  a {
+    outline: none;
+  }
+
+  :root[data-keyboard-focus] :is(button, input, a):focus {
+    outline: 2px solid var(--color-palette-primary);
+    outline-offset: 2px;
+  }
 }
 
 @keyframes search-pop-in {

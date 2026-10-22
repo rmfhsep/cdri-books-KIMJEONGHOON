@@ -1,7 +1,7 @@
 import { useQueries } from "@tanstack/react-query";
-import { searchBooks } from "@/modules/book/api/bookApi";
+import { bookApi } from "@/modules/book/api/bookApi";
 import { BookSearchTarget } from "@/modules/book/types/book";
-import type { SavedBook } from "@/modules/book/types/book";
+import type { Book } from "@/modules/book/types/book";
 
 /**
  * 현재 표시할 찜한 책을 ISBN으로 조회한다. 실패해도 저장된 도서 데이터는 유지한다.
@@ -11,12 +11,12 @@ import type { SavedBook } from "@/modules/book/types/book";
  * @example
  * const queries = useSavedBooksQuery(visibleFavorites, isFavorites);
  */
-export function useSavedBooksQuery(favorites: SavedBook[], enabled: boolean) {
+export const useSavedBooksQuery = (favorites: Book[], enabled: boolean) => {
   return useQueries({
-    queries: favorites.map(({ book }) => ({
+    queries: favorites.map((book) => ({
       queryKey: ["books", "isbn", book.isbn],
       queryFn: async () => {
-        const result = await searchBooks({
+        const result = await bookApi.searchBooks({
           query: book.isbn,
           target: BookSearchTarget.Isbn,
         });
@@ -27,4 +27,4 @@ export function useSavedBooksQuery(favorites: SavedBook[], enabled: boolean) {
       retry: false,
     })),
   });
-}
+};

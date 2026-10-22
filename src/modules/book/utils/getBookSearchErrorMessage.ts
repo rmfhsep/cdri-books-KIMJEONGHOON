@@ -8,7 +8,7 @@ import type { KakaoErrorResponse } from "@/modules/book/types/bookApi";
  * @example
  * const message = getBookSearchErrorMessage(query.error);
  */
-export function getBookSearchErrorMessage(error: unknown): string {
+export const getBookSearchErrorMessage = (error: unknown): string => {
   const fallback = "도서 검색에 실패했습니다. 다시 시도해 주세요.";
   if (!isAxiosError<KakaoErrorResponse>(error)) return fallback;
   if (!error.response) return "네트워크 연결을 확인한 뒤 다시 시도해 주세요.";
@@ -51,4 +51,4 @@ export function getBookSearchErrorMessage(error: unknown): string {
   if (status === 400)
     return "검색 요청이 올바르지 않습니다. 검색 조건을 확인해 주세요.";
   return fallback;
-}
+};

@@ -6,10 +6,10 @@ interface SearchCountTextProps {
 /**
  * 도서 검색 결과 건수를 천 단위 구분 기호와 함께 표시한다.
  */
-export function SearchCountText({
+export const SearchCountText = ({
   count,
   label = "도서 검색 결과",
-}: SearchCountTextProps) {
+}: SearchCountTextProps) => {
   return (
     <p className="flex items-center gap-4 text-caption leading-6">
       <span>{label}</span>
@@ -22,4 +22,4 @@ export function SearchCountText({
       </span>
     </p>
   );
-}
+};

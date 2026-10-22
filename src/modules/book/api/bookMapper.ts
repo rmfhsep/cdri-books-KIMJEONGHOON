@@ -8,9 +8,9 @@ import type { BookSearchResponse } from "@/modules/book/types/bookApi";
  * @example
  * const result = toBookSearchResult(response);
  */
-export function toBookSearchResult(
+export const toBookSearchResult = (
   response: BookSearchResponse,
-): BookSearchResult {
+): BookSearchResult => {
   return {
     books: response.documents.map((book) => {
       const isbns = book.isbn.trim().split(/\s+/);
@@ -30,4 +30,4 @@ export function toBookSearchResult(
     pageableCount: response.meta.pageable_count,
     isEnd: response.meta.is_end,
   };
-}
+};

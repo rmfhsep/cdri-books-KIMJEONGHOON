@@ -6,7 +6,7 @@ interface IconSearchProps {
 /**
  * 검색 입력창에 사용하는 장식용 돋보기 아이콘.
  */
-export function IconSearch({ size = 30, className = "" }: IconSearchProps) {
+export const IconSearch = ({ size = 30, className = "" }: IconSearchProps) => {
   return (
     <svg
       width={size}
@@ -24,4 +24,4 @@ export function IconSearch({ size = 30, className = "" }: IconSearchProps) {
       />
     </svg>
   );
-}
+};

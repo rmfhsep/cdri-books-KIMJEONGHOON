@@ -25,8 +25,17 @@ export enum BookSearchSort {
 export interface BookSearchParams {
   query: string;
   target?: BookSearchTarget;
+  /** 화면에 query 대신 보여줄 검색어. 최근 본 책의 ISBN 재검색에서 책 제목을 표시할 때 사용한다. */
+  label?: string;
   sort?: BookSearchSort;
   page?: number;
+}
+
+/** 최근 검색어. 상세검색으로 실행한 검색어만 target을 가진다. */
+export interface SearchHistoryItem {
+  query: string;
+  target?: BookSearchTarget;
+  label?: string;
 }
 
 export interface BookSearchResult {
@@ -34,11 +43,6 @@ export interface BookSearchResult {
   totalCount: number;
   pageableCount: number;
   isEnd: boolean;
-}
-
-export interface SavedBook {
-  book: Book;
-  savedAt: string;
 }
 
 export enum BookTab {

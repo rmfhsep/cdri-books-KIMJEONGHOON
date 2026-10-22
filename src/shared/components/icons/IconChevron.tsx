@@ -9,11 +9,11 @@ interface IconChevronProps {
  * @param props.size 너비이며 높이는 원본의 14:8 비율로 계산한다.
  * @param props.direction 기본 방향은 down이다.
  */
-export function IconChevron({
+export const IconChevron = ({
   size = 14,
   className = "",
   direction = "down",
-}: IconChevronProps) {
+}: IconChevronProps) => {
   return (
     <svg
       width={size}
@@ -32,4 +32,4 @@ export function IconChevron({
       />
     </svg>
   );
-}
+};

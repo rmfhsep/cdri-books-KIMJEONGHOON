@@ -5,6 +5,6 @@
  * @example
  * formatPrice(13300); // "13,300원"
  */
-export function formatPrice(price: number) {
+export const formatPrice = (price: number) => {
   return `${price.toLocaleString("ko-KR")}원`;
-}
+};

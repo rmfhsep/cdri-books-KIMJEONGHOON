@@ -8,12 +8,12 @@ interface IconButtonProps extends ComponentProps<"button"> {
  * 아이콘만 표시하는 버튼.
  * @param props 반드시 aria-label로 버튼의 동작을 설명한다.
  */
-export function IconButton({
+export const IconButton = ({
   type = "button",
   className = "",
   children,
   ...props
-}: IconButtonProps) {
+}: IconButtonProps) => {
   return (
     <button
       {...props}
@@ -23,4 +23,4 @@ export function IconButton({
       {children}
     </button>
   );
-}
+};

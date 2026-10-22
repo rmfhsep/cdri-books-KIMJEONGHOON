@@ -11,20 +11,20 @@ interface BookImageFrameProps {
 
 /**
  * 도서 표지와 찜 버튼을 표시한다.
- * @param props.size sm은 목록용 표지와 16px 하트, lg는 상세용 표지와 24px 하트를 사용한다.
  * @param props.onLike 찜 버튼 클릭을 알린다. 찜 상태는 부모가 관리한다.
+ * @param props.size sm은 목록용 표지와 16px 하트, lg는 상세용 표지와 24px 하트를 사용한다.
  */
-export function BookImageFrame({
+export const BookImageFrame = ({
   thumbnail,
   title,
   isLiked,
   onLike,
   size = "sm",
-}: BookImageFrameProps) {
+}: BookImageFrameProps) => {
   const isSmall = size === "sm";
   return (
     <div
-      className={`relative shrink-0 ${isSmall ? "h-[68px] w-12" : "h-[280px] w-[210px]"}`}
+      className={`relative shrink-0 ${isSmall ? "h-17 w-12" : "h-70 w-52.5"}`}
     >
       <img
         src={thumbnail || undefined}
@@ -36,7 +36,6 @@ export function BookImageFrame({
       />
       <IconButton
         aria-label={`${title} ${isLiked ? "찜 해제" : "찜하기"}`}
-        aria-pressed={isLiked}
         onClick={onLike}
         className={`absolute ${isSmall ? "top-0 right-0" : "top-2 right-2"}`}
       >
@@ -44,4 +43,4 @@ export function BookImageFrame({
       </IconButton>
     </div>
   );
-}
+};

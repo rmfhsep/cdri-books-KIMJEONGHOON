@@ -9,11 +9,11 @@ interface IconLikeProps {
  * @param props.isOn true면 채운 하트, false면 윤곽 하트를 표시한다. 기본값은 false다.
  * @param props.size 기본값은 24px이며 작은 표지에서는 16px을 사용한다.
  */
-export function IconLike({
+export const IconLike = ({
   isOn = false,
   size = 24,
   className = "",
-}: IconLikeProps) {
+}: IconLikeProps) => {
   return (
     <svg
       width={size}
@@ -44,4 +44,4 @@ export function IconLike({
       )}
     </svg>
   );
-}
+};
