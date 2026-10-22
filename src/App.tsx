@@ -1,9 +1,7 @@
+import { BookPageBox } from "@/modules/book/components/BookPageBox";
+
 function App() {
-  return (
-    <main>
-      <h1 className="text-title1">CERTICOS BOOKS</h1>
-    </main>
-  );
+  return <BookPageBox />;
 }
 
 export default App;
