@@ -5,6 +5,7 @@ import { PanelBookList } from "@/modules/book/components/bookList/PanelBookList"
 import { TabLayout } from "@/modules/book/components/bookPage/TabLayout";
 import { SearchBox } from "@/modules/book/components/search/SearchBox";
 import { SearchCountText } from "@/modules/book/components/search/SearchCountText";
+import { SpellingSuggestion } from "@/modules/book/components/search/SpellingSuggestion";
 import type { useSearchPanel } from "@/modules/book/hooks/useSearchPanel";
 import type { Book } from "@/modules/book/types/book";
 
@@ -79,7 +80,14 @@ const SearchResult = ({ panel, active, likedIds, onLike }: SearchTabProps) => {
       </div>
     );
   if (panel.books.length === 0)
-    return <NoData message="검색된 결과가 없습니다." className="lg:pt-28" />;
+    return (
+      <NoData message="검색된 결과가 없습니다." className="lg:pt-28">
+        <SpellingSuggestion
+          query={panel.submittedQuery}
+          onSearch={panel.searchSuggestion}
+        />
+      </NoData>
+    );
   return (
     <PanelBookList
       key={panel.listKey}

@@ -20,10 +20,13 @@ export const toBookSearchResult = (
         title: book.title,
         author: book.authors.join(", "),
         thumbnail: book.thumbnail,
-        price: book.price,
-        salePrice: book.sale_price >= 0 ? book.sale_price : undefined,
-        contents: book.contents,
-        url: book.url,
+        price: book.price ?? 0,
+        salePrice:
+          book.sale_price != null && book.sale_price >= 0
+            ? book.sale_price
+            : undefined,
+        contents: book.contents ?? "",
+        url: book.url ?? "",
       };
     }),
     totalCount: response.meta.total_count,

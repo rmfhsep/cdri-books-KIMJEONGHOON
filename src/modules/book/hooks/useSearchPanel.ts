@@ -15,17 +15,19 @@ import type {
 } from "@/modules/book/types/book";
 
 interface UseSearchPanelParams {
+  active: boolean;
   onExpand: (book: Book) => void;
 }
 
 /**
  * 도서 검색 탭의 검색 조건, 검색 결과, 검색기록과 스크롤 위치를 관리한다.
+ * @param params.active 검색 탭이 보이는 동안에만 검색 결과를 조회한다.
  * @param params.onExpand 상세보기를 펼칠 때 호출한다.
  * @returns 검색 결과 목록 데이터와 검색·기록 삭제·재시도·앞뒤 페이지 요청·펼침 액션.
  * @example
- * const searchPanel = useSearchPanel({ onExpand });
+ * const searchPanel = useSearchPanel({ active, onExpand });
  */
-export const useSearchPanel = ({ onExpand }: UseSearchPanelParams) => {
+export const useSearchPanel = ({ active, onExpand }: UseSearchPanelParams) => {
   const [searchParams, setSearchParams] = useState(() =>
     readStorage<BookSearchParams>(STORAGE_KEYS.searchParams, { query: "" }),
   );
@@ -34,16 +36,24 @@ export const useSearchPanel = ({ onExpand }: UseSearchPanelParams) => {
   );
   const [searchBoxKey, setSearchBoxKey] = useState(0);
   const [scrollParent, setScrollParent] = useState<HTMLElement | null>(null);
-  const query = useBookSearchQuery(searchParams, getSavedPage(BookTab.Search));
+
+  const query = useBookSearchQuery(
+    searchParams,
+    getSavedPage(BookTab.Search),
+    active,
+  );
+
   const scroll = useScrollRestoration({
     tabKey: BookTab.Search,
     scrollParent,
     ready: !query.isLoading,
   });
+
   const { expandedIds, toggleExpanded, resetExpanded } = useExpandedIds({
     storageKey: STORAGE_KEYS.searchExpandedIds,
     onExpand,
   });
+
   const books = query.data?.pages.flatMap((page) => page.books) ?? [];
   const firstPage = Number(query.data?.pageParams[0] ?? 1);
   const canFetch = !query.isFetching && !query.isError;
@@ -81,6 +91,13 @@ export const useSearchPanel = ({ onExpand }: UseSearchPanelParams) => {
     setSearchBoxKey((key) => key + 1);
   };
 
+  /** @param suggestion 오타 교정 제안 클릭 시 재검색할 단어. 검색창 표시도 함께 갱신한다. */
+  const searchSuggestion = (suggestion: string) => {
+    search({ query: suggestion });
+    writeStorage(STORAGE_KEYS.searchInput, suggestion);
+    setSearchBoxKey((key) => key + 1);
+  };
+
   const retry = () => {
     if (query.isFetchPreviousPageError) query.fetchPreviousPage();
     else if (query.isFetchNextPageError) query.fetchNextPage();
@@ -93,6 +110,7 @@ export const useSearchPanel = ({ onExpand }: UseSearchPanelParams) => {
     setScrollParent,
     books,
     count: query.data?.pages[0]?.totalCount ?? 0,
+    submittedQuery: searchParams.query,
     label: searchParams.label ?? searchParams.query,
     listKey: JSON.stringify(searchParams),
     firstItemIndex: (firstPage - 1) * 10,
@@ -107,6 +125,7 @@ export const useSearchPanel = ({ onExpand }: UseSearchPanelParams) => {
     searchBoxKey,
     search,
     searchBook,
+    searchSuggestion,
     retry,
     removeHistory: (item: SearchHistoryItem) =>
       saveHistory(history.filter((value) => !isSameHistory(value, item))),

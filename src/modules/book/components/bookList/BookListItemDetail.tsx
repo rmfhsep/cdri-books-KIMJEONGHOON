@@ -90,6 +90,12 @@ export const BookListItemDetail = ({
         href={book.url}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={(e) => {
+          if (!book.url) {
+            e.preventDefault();
+            alert("판매가 종료된 도서입니다.");
+          }
+        }}
         className="inline-flex h-12 items-center justify-center rounded-control bg-palette-primary px-5 text-caption text-palette-white lg:absolute lg:top-64 lg:right-4 lg:w-60"
       >
         구매하기

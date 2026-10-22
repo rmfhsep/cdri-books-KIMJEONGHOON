@@ -27,12 +27,16 @@ export const BookImageFrame = ({
       className={`relative shrink-0 ${isSmall ? "h-17 w-12" : "h-70 w-52.5"}`}
     >
       <img
-        src={thumbnail || undefined}
+        src={thumbnail || "/book_placeholder.jpg"}
         alt={title}
         width={isSmall ? 48 : 210}
         height={isSmall ? 68 : 280}
         loading="lazy"
         className="h-full w-full object-cover"
+        onError={(e) => {
+          e.currentTarget.onerror = null;
+          e.currentTarget.src = "/book_placeholder.jpg";
+        }}
       />
       <IconButton
         aria-label={`${title} ${isLiked ? "찜 해제" : "찜하기"}`}

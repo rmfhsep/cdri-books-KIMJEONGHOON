@@ -23,7 +23,7 @@ export const useSavedBooksQuery = (favorites: Book[], enabled: boolean) => {
         return result.books.find((item) => item.isbn === book.isbn) ?? null;
       },
       enabled: enabled && Boolean(book.isbn),
-      staleTime: 5 * 60 * 1000,
+      staleTime: 60 * 60 * 1000,
       retry: false,
     })),
   });

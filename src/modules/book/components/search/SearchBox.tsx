@@ -91,24 +91,26 @@ export const SearchBox = ({
             />
           )}
         </div>
-        <Button
-          ref={detailButtonRef}
-          color="secondary"
-          variant="outline"
-          size="sm"
-          onClick={openPop}
-          className="mt-[8.82px]"
-        >
-          상세검색
-        </Button>
+        <div className="relative shrink-0">
+          <Button
+            ref={detailButtonRef}
+            color="secondary"
+            variant="outline"
+            size="sm"
+            onClick={openPop}
+            className="mt-[8.82px]"
+          >
+            상세검색
+          </Button>
+          {isPopOpen && (
+            <Pop
+              initialQuery={detailQuery}
+              onClose={closePop}
+              onSearch={searchDetail}
+            />
+          )}
+        </div>
       </div>
-      {isPopOpen && (
-        <Pop
-          initialQuery={detailQuery}
-          onClose={closePop}
-          onSearch={searchDetail}
-        />
-      )}
     </section>
   );
 };

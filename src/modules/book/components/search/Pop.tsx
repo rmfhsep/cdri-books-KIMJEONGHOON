@@ -1,8 +1,13 @@
-import type { ChangeEvent, FocusEvent, FormEvent, KeyboardEvent } from "react";
+import type {
+  ChangeEvent,
+  FocusEvent,
+  KeyboardEvent,
+  SubmitEvent,
+} from "react";
 import { Button } from "@/shared/components/button/Button";
 import { IconButton } from "@/shared/components/button/IconButton";
-import { IconChevron } from "@/shared/components/icons/IconChevron";
 import { IconClose } from "@/shared/components/icons/IconClose";
+import { Select } from "@/shared/components/select/Select";
 import { SEARCH_TARGETS } from "@/modules/book/constants/searchTargets";
 import { usePop } from "@/modules/book/hooks/usePop";
 import type { BookSearchParams } from "@/modules/book/types/book";
@@ -47,13 +52,9 @@ export const Pop = ({ initialQuery, onClose, onSearch }: PopProps) => {
     if (next && !event.currentTarget.contains(next)) onClose();
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     search();
-  };
-
-  const handleFilterToggle = () => {
-    setIsFilterOpen(!isFilterOpen);
   };
 
   const handleQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -62,7 +63,7 @@ export const Pop = ({ initialQuery, onClose, onSearch }: PopProps) => {
 
   return (
     <div
-      className="search-pop absolute top-[calc(100%+8px)] right-0 z-30 h-40 w-90 max-w-full rounded-control bg-palette-white shadow-[0_4px_14px_rgba(151,151,151,0.15)]"
+      className="search-pop absolute top-[calc(100%+8px)] right-0 z-30 h-40 w-90 max-w-[calc(100vw-2rem)] rounded-control bg-palette-white shadow-[0_4px_14px_rgba(151,151,151,0.15)] lg:right-auto lg:left-1/2 lg:max-w-none lg:-translate-x-1/2"
       onKeyDown={handleKeyDown}
       onBlur={handleBlur}
     >
@@ -75,34 +76,15 @@ export const Pop = ({ initialQuery, onClose, onSearch }: PopProps) => {
       </IconButton>
       <form className="px-6 pt-9" onSubmit={handleSubmit}>
         <div className="flex gap-1">
-          <div className="relative w-25 shrink-0">
-            <button
-              ref={filterRef}
-              type="button"
-              onClick={handleFilterToggle}
-              className="flex h-9 w-full cursor-pointer items-center justify-between border-b border-ui-border px-2 text-body2Bold leading-5.5"
-            >
-              {SEARCH_TARGETS.find((filter) => filter.value === target)?.label}
-              <IconChevron size={10} />
-            </button>
-            {isFilterOpen && (
-              <ul className="absolute top-10.5 z-10 w-full bg-palette-white shadow-[0_0_4px_rgba(0,0,0,0.25)]">
-                {SEARCH_TARGETS.filter((filter) => filter.value !== target).map(
-                  (filter) => (
-                    <li key={filter.value}>
-                      <button
-                        type="button"
-                        onClick={() => selectFilter(filter.value)}
-                        className="h-7.5 w-full cursor-pointer px-2 text-left text-body2 leading-5.5 text-text-subtitle"
-                      >
-                        {filter.label}
-                      </button>
-                    </li>
-                  ),
-                )}
-              </ul>
-            )}
-          </div>
+          <Select
+            options={SEARCH_TARGETS}
+            value={target}
+            onChange={selectFilter}
+            open={isFilterOpen}
+            onOpenChange={setIsFilterOpen}
+            triggerRef={filterRef}
+            className="w-25"
+          />
           <input
             ref={inputRef}
             value={query}

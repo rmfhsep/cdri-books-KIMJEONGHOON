@@ -1,7 +1,10 @@
+import { useState } from "react";
+import { Select } from "@/shared/components/select/Select";
 import { NoData } from "@/modules/book/components/bookList/NoData";
 import { PanelBookList } from "@/modules/book/components/bookList/PanelBookList";
 import { TabLayout } from "@/modules/book/components/bookPage/TabLayout";
 import { SearchCountText } from "@/modules/book/components/search/SearchCountText";
+import { FAVORITES_SORT_OPTIONS } from "@/modules/book/constants/favoritesSort";
 import type { useFavoritesPanel } from "@/modules/book/hooks/useFavoritesPanel";
 
 interface FavoritesTabProps {
@@ -11,6 +14,8 @@ interface FavoritesTabProps {
 
 /** 내가 찜한 책 탭. 찜한 책 건수는 상단에 붙고, 아래에 찜 목록을 표시한다. */
 export const FavoritesTab = ({ panel, active }: FavoritesTabProps) => {
+  const [isSortOpen, setIsSortOpen] = useState(false);
+
   return (
     <TabLayout
       active={active}
@@ -18,8 +23,19 @@ export const FavoritesTab = ({ panel, active }: FavoritesTabProps) => {
       setScrollParent={panel.setScrollParent}
       title={<h1 className="text-title2 leading-8">내가 찜한 책</h1>}
       header={
-        <div className="pt-3">
+        <div className="flex items-center justify-between pt-3">
           <SearchCountText count={panel.count} label="찜한 책" />
+          <Select
+            options={FAVORITES_SORT_OPTIONS}
+            value={panel.sort}
+            onChange={(value) => {
+              panel.setSort(value);
+              setIsSortOpen(false);
+            }}
+            open={isSortOpen}
+            onOpenChange={setIsSortOpen}
+            className="w-28"
+          />
         </div>
       }
     >

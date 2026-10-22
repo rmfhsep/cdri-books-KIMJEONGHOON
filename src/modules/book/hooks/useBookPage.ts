@@ -25,7 +25,10 @@ export const useBookPage = () => {
     writeStorage(STORAGE_KEYS.recentBook, book);
   };
 
-  const searchPanel = useSearchPanel({ onExpand: saveRecentBook });
+  const searchPanel = useSearchPanel({
+    active: tab === BookTab.Search,
+    onExpand: saveRecentBook,
+  });
   const favoritesPanel = useFavoritesPanel({
     active: tab === BookTab.Favorites,
     onExpand: saveRecentBook,

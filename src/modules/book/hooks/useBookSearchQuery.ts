@@ -10,14 +10,16 @@ import { getBookSearchErrorMessage } from "@/modules/book/utils/getBookSearchErr
  * 제출한 검색 조건으로 도서를 10개씩 가져오는 양방향 무한스크롤 쿼리.
  * @param params 검색어·검색 대상·정렬. 빈 검색어는 요청하지 않는다.
  * @param initialPage 처음 요청할 페이지. 새로고침 후 보던 페이지만 불러오고 앞뒤 페이지는 스크롤할 때 요청한다.
+ * @param enabled 검색 탭이 보이는 동안에만 요청하도록 제어한다.
  * @returns pages, 로딩·오류 상태, errorMessage와 fetchPreviousPage·fetchNextPage, hasPreviousPage·hasNextPage를 제공한다.
  * @example
- * const query = useBookSearchQuery({ query: submittedQuery }, 1);
+ * const query = useBookSearchQuery({ query: submittedQuery }, 1, isSearchTab);
  * // 목록 하단이 보이면 hasNextPage && !isFetchingNextPage를 확인한 뒤 fetchNextPage()를 호출한다.
  */
 export const useBookSearchQuery = (
   params: Omit<BookSearchParams, "page">,
   initialPage: number,
+  enabled: boolean,
 ) => {
   const searchParams = {
     query: params.query.trim(),
@@ -34,7 +36,8 @@ export const useBookSearchQuery = (
       firstPageParam > 1 ? firstPageParam - 1 : undefined,
     getNextPageParam: (lastPage, _pages, lastPageParam) =>
       lastPage.isEnd || lastPageParam >= 50 ? undefined : lastPageParam + 1,
-    enabled: searchParams.query.length > 0,
+    enabled: enabled && searchParams.query.length > 0,
+    staleTime: 5 * 60 * 1000,
     retry: false,
   });
 
